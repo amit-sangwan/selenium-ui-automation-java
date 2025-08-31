@@ -37,8 +37,8 @@ jobs:
           cache: maven
 
       # 5. Run Selenium tests with Maven
-- name: Run Selenium tests
-  run: |
-    cd custom-juice-shop
-    mvn clean test -Dbrowser=chrome -Dapp.url=https://custom-juice-shop.onrender.com/ -Denv=render
+      - name: Run Selenium tests
+        run: |
+          cd custom-juice-shop
+          mvn clean test -Dbrowser=chrome -Dapp.url=https://custom-juice-shop.onrender.com/ -Denv=render
 
