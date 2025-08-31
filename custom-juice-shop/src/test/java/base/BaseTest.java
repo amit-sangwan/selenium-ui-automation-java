@@ -17,6 +17,7 @@ public class BaseTest {
     @BeforeMethod
     public void setUp() throws IOException {
         driver = DriverFactory.getDriver();
+        // *******  More time delays as the app under test is hosted on a small-sized machine *******
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
         driver.manage().window().maximize();
