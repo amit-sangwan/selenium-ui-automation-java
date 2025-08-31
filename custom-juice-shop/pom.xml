@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.selenium-ui-automation-java.automation</groupId>
+    <artifactId>custom-juice-shop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Selenium UI Automation, POM Framework</name>
+    <description>A Selenium UI automation framework with POM, TestNG, ExtentReports</description>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source> <!-- Java version -->
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- Selenium Java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.21.0</version>
+        </dependency>
+
+        <!-- WebDriverManager (auto driver handling) -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.9.2</version>
+        </dependency>
+
+        <!-- TestNG (Testing Framework) -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Extent Reports (HTML reporting) -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
+        <!-- Apache Commons (utilities like FileUtils, IO) -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+
+        <!-- Jackson (for JSON data reading, optional) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+
+        <!-- Log4j2 (logging support) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+
+    </dependencies>
+    <profiles>
+        <!-- Localhost Profile --><!-- mvn clean test -P<env_name> -->
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+                <app.url>http://localhost:3000</app.url>
+            </properties>
+        </profile>
+
+        <!-- Render Profile -->
+        <profile>
+            <id>render</id>
+            <!-- <activeByDefault>true</activeByDefault>
+                → this makes the profile automatically active
+                  if no other profile is specified.-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>render</env>
+                <app.url>https://custom-juice-shop.onrender.com/</app.url>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin (runs TestNG tests) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <!--          <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile> -->
+                          </suiteXmlFiles>
+                      </configuration>
+                  </plugin>
+
+              </plugins>
+          </build>
+
+      </project>
