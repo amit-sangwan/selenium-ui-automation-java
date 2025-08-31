@@ -7,6 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.io.IOException;
+import java.time.Duration;
 
 
 public class BaseTest {
@@ -16,7 +17,10 @@ public class BaseTest {
     @BeforeMethod
     public void setUp() throws IOException {
         driver = DriverFactory.getDriver();
-        baseUrl = ConfigLoader.get("baseUrl");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
+        driver.manage().window().maximize();
+        baseUrl = ConfigLoader.getAppUrl();
     }
 
     @AfterMethod

@@ -20,12 +20,19 @@ public class ConfigLoader {
     }
 
 
-    public static String get(String key) {
-        // Check system property first
-        String sysValue = System.getProperty(key);
-        if (sysValue != null) return sysValue;
+    public static String getBrowser() {
+        // Runtime system property > Maven profile > default
+        String browser = System.getProperty("browserName");   // from -DbrowserName=safari
+        if (browser != null && !browser.isEmpty()) return browser;
 
-        // fallback to run.properties
-        return properties.getProperty(key);
+        browser = properties.getProperty("browser");          // fallback to properties file
+        return browser != null ? browser : "chrome";          // default to chrome
+    }
+
+    public static String getAppUrl() {
+        String url = System.getProperty("app.url");
+        if (url != null && !url.isEmpty()) return url;
+        url = properties.getProperty("app.url");
+        return url != null ? url : "http://localhost:3000";
     }
 }

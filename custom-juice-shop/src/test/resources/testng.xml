@@ -2,7 +2,7 @@
 <suite name="Automation Suite" verbose="1">
     <test name="UI Tests">
         <classes>
-            <class name="tests.Test"/>
+            <class name="tests.HomePageTest"/>
         </classes>
     </test>
 </suite>

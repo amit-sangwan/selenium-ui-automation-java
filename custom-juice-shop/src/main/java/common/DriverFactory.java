@@ -25,7 +25,7 @@ public class DriverFactory {
      * Initialize WebDriver based on browser from run.properties or Maven profile
      */
     private static WebDriver initDriver() {
-        String browser = ConfigLoader.get("browserName").toLowerCase();
+        String browser = ConfigLoader.getBrowser().toLowerCase();
         WebDriver wd;
 
         switch (browser) {
@@ -51,7 +51,6 @@ public class DriverFactory {
                 break;
         }
 
-        wd.manage().window().maximize();
         return wd;
     }
 
