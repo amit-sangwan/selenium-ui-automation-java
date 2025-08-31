@@ -32,17 +32,17 @@ jobs:
           java-version: 21
           cache: maven
 
-      # 4. Set up Chrome
-      - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: latest
+      # 4. Install Google Chrome
+      - name: Install Google Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
-      # 5. Set up ChromeDriver
+      # 5. Set up ChromeDriver (match installed Chrome)
       - name: Set up ChromeDriver
         uses: nanasess/setup-chromedriver@v1
         with:
-          chrome-version: latest
+          chromedriver-version: latest
 
       # 6. Run Maven tests
       - name: Run Selenium Tests
