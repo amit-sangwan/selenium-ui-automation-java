@@ -1,0 +1,35 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+*.ipr
+
+# Maven target directory
+target/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Eclipse files (if ever used)
+.settings/
+*.classpath
+*.project
+
+# Temporary files
+*.tmp
+*.bak
+
+# Selenium / WebDriver related (if any local binaries)
+chromedriver
+geckodriver
+IEDriverServer.exe
+
+# Test reports (optional, depends if you want to keep)
+test-output/
+extent-reports/
+

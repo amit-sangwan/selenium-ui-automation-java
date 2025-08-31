@@ -10,17 +10,67 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Selenium UI Automation, POM Framework</name>
-    <description>A Selenium UI automation framework with POM, TestNG, ExtentReports</description>
+    <name>Selenium UI Automation POM Framework</name>
+    <description>A Selenium UI automation base with POM, TestNG, ExtentReports</description>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source> <!-- Java version -->
+        <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <browserName>chrome</browserName>
+        <app.url>https://custom-juice-shop.onrender.com/</app.url>
+        <env>render</env>
     </properties>
 
-    <dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>run.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
 
+        <plugins>
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <browserName>${browserName}</browserName>
+                        <app.url>${app.url}</app.url>
+                        <env>${env}</env>
+                    </systemPropertyVariables>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${project.basedir}/src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
         <!-- Selenium Java -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -28,14 +78,14 @@
             <version>4.21.0</version>
         </dependency>
 
-        <!-- WebDriverManager (auto driver handling) -->
+        <!-- WebDriverManager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>5.9.2</version>
         </dependency>
 
-        <!-- TestNG (Testing Framework) -->
+        <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -43,28 +93,28 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Extent Reports (HTML reporting) -->
+        <!-- Extent Reports -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>5.1.1</version>
         </dependency>
 
-        <!-- Apache Commons (utilities like FileUtils, IO) -->
+        <!-- Apache Commons Lang -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.14.0</version>
         </dependency>
 
-        <!-- Jackson (for JSON data reading, optional) -->
+        <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.17.0</version>
         </dependency>
 
-        <!-- Log4j2 (logging support) -->
+        <!-- Log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -75,64 +125,44 @@
             <artifactId>log4j-api</artifactId>
             <version>2.23.1</version>
         </dependency>
-
     </dependencies>
+
     <profiles>
-        <!-- Localhost Profile --><!-- mvn clean test -P<env_name> -->
         <profile>
             <id>local</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
             <properties>
                 <env>local</env>
-                <app.url>http://localhost:3000</app.url>
+                <app.url>http://localhost:3000/</app.url>
+                <browserName>chrome</browserName>
             </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>environment</name>
+                    <value>local</value>
+                </property>
+            </activation>
+            <build>
+                <testResources>
+                    <testResource>
+                        <directory>${project.basedir}/src/test/resources/production</directory>
+                        <filtering>true</filtering>
+                    </testResource>
+                </testResources>
+            </build>
         </profile>
 
-        <!-- Render Profile -->
         <profile>
             <id>render</id>
-            <!-- <activeByDefault>true</activeByDefault>
-                → this makes the profile automatically active
-                  if no other profile is specified.-->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <env>render</env>
                 <app.url>https://custom-juice-shop.onrender.com/</app.url>
+                <browserName>chrome</browserName>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 
-    <build>
-        <plugins>
-
-            <!-- Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-
-            <!-- Surefire Plugin (runs TestNG tests) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <suiteXmlFiles>
-                        <!--          <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile> -->
-                          </suiteXmlFiles>
-                      </configuration>
-                  </plugin>
-
-              </plugins>
-          </build>
-
-      </project>
+</project>
