@@ -1,45 +1,54 @@
-name: Selenium UI Automation CI
+name: Selenium CI
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  test:
+  selenium-tests:
     runs-on: ubuntu-latest
 
-    env:
-      BROWSER: chrome
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 1. Checkout the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 21
+      # 2. Set up JDK
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
 
-    - name: Cache Maven dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      # 3. Set up Maven
+      - name: Set up Maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
 
-    - name: Install latest Chrome
-      uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: latest
+      # 4. Set up Chrome
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
 
-    - name: Run Selenium Tests
-      run: |
-        echo "Running Maven tests on headless Chrome"
-        mvn clean test \
-          -Dbrowser=${BROWSER} \
-          -Dchrome.options="--headless --no-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/chrome-user-data-${GITHUB_RUN_ID}" \
-          -Dsurefire.printSummary=true
+      # 5. Set up ChromeDriver
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          chrome-version: latest
+
+      # 6. Run Maven tests
+      - name: Run Selenium Tests
+        run: |
+          echo "Running Maven tests on headless Chrome"
+          mvn clean test \
+            -Dbrowser=chrome \
+            -Dchrome.options="--headless --no-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/chrome-user-data-${GITHUB_RUN_ID}" \
+            -Dsurefire.printSummary=true
