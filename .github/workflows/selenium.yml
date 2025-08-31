@@ -36,11 +36,6 @@ jobs:
       with:
         chrome-version: latest
 
-    - name: Install ChromeDriver
-      uses: nanasess/setup-chromedriver@v1
-      with:
-        chromedriver-version: latest
-
     - name: Run Selenium Tests
       run: |
         echo "Running Maven tests on headless Chrome"
